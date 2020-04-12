@@ -94,8 +94,9 @@ Ports - service name 'redis-cluster-service', port name: 'gossip', targetPort: '
 
 ### Cofigure Cluster 
 ```
-Configure the Cluster. Once the StatefulSet has been deployed with 6 'Running' pods, run the below commands and type 'yes' when prompted.
-```
-```
-Command: kubectl exec -it redis-cluster-0 -- redis-cli --cluster create --cluster-replicas 1 $(kubectl get pods -l app=redis-cluster -o jsonpath='{range.items[*]}{.status.podIP}:6379 ')
+Configure the Cluster. 
+Once the StatefulSet has been deployed with 6 'Running' pods, run the below commands and type 'yes' when prompted.
+Command: 
+kubectl exec -it redis-cluster-0 -- redis-cli --cluster create --cluster-replicas 1 \
+$(kubectl get pods -l app=redis-cluster -o jsonpath='{range.items[*]}{.status.podIP}:6379 ')
 ```
