@@ -1,7 +1,7 @@
 # The Kingdom of Redis Islands needs reinforcement! Build a highly available Redis Cluster based on the below architecture.
 ## Create StatefulSets with following configuration
 
-![Architecture]("Architecture.png")
+![Architecture](Architecture.png)
 ```
 StatefulSet - Name: redis-cluster
 Replicas: 6
