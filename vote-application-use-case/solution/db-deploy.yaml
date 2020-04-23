@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-deployment
+  namespace: vote-ns
+  labels:
+    name: db-deployment
+    app: db-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+       app: db-deployment
+  template:
+    metadata:
+      labels:
+        app: db-deployment
+    spec:
+      volumes:
+        - name: db-data
+          emptyDir: {}
+      containers:
+      - name: db-deployment
+        image: postgres:9.4
+        volumeMounts:
+          - name: db-data
+            mountPath: /var/lib/postgresql/data
+      
+    
+    
