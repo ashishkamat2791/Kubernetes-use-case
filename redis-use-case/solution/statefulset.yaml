@@ -1,34 +1,33 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: redis-cluster
+  name:  redis-cluster
 spec:
   selector:
     matchLabels:
       app: redis-cluster # has to match .spec.template.metadata.labels
+  serviceName: "redis-cluster-service"
   replicas: 6 # by default is 1
-  serviceName: redis
   template:
     metadata:
       labels:
         app: redis-cluster # has to match .spec.selector.matchLabels
     spec:
+      terminationGracePeriodSeconds: 10
       volumes:
       - name: conf
         configMap:
           name: redis-cluster-configmap
-        defaultMode: 0755
-      - name: redis-storage
-        persistentVolumeClaim:
-         claimName: redis01
+          defaultMode: 0755
       containers:
-      - name: redis
+      - name: redis-cluster
         image: redis:5.0.1-alpine
         command: ["/conf/update-node.sh", "redis-server", "/conf/redis.conf"]
         env:
-          - name: POD_IP
-            valueFrom:
-                fieldRef:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         ports:
         - containerPort: 6379
           name: client
@@ -46,6 +45,7 @@ spec:
       name: data
     spec:
       accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "manual"
       resources:
         requests:
           storage: 1Gi
